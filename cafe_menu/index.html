@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Café Deluxe Menu</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Georgia', serif;
+    color: #eee;
+    background: url('https://images.unsplash.com/photo-1669295987842-53270c972055?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWZlJTIwY29mZmVlJTIwc2hvcCUyMGludGVyaW9yJTIwd2FybXxlbnwxfHx8fDE3NTQ4MjUxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral') no-repeat center center/cover;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Overlay gradients for readability */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Container for content */
+  .container {
+    
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding: 4rem 1.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .header .line {
+    width: 80px;
+    height: 4px;
+    background-color: rgba(150,102,56,0.76);
+    margin: 0 auto 1rem;
+    border-radius: 2px;
+  }
+  .header h1 {
+    font-size: 4rem;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: white;
+  }
+  .header h2 {
+    font-size: 2rem;
+    margin: 0.25rem 0 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: rgba(150,102,56,0.76);
+  }
+  .header .line.bottom {
+    margin-top: 1rem;
+  }
+  .header p {
+    font-size: 1.25rem;
+    max-width: 360px;
+    margin: 0 auto;
+    color: #ddd;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* Menu Grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 3rem;
+  }
+
+  /* Each card */
+  .card {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 2rem 1.5rem 2rem;
+    border: 1.5px solid rgba(150,102,56,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-circle {
+    background: rgba(150,102,56,0.76);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    color: white;
+    font-weight: 700;
+  }
+  /* Special icon overrides */
+  .special-icon {
+    background: rgba(150,102,56,0.76) !important;
+    color: black !important;
+  }
+
+  .card h3 {
+    margin: 0 0 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: white;
+  }
+
+  /* Menu items */
+  .menu-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+  }
+  .menu-item span.price {
+    color: rgba(150,102,56,0.76);
+    font-weight: 600;
+  }
+
+  /* Call to action */
+  .cta {
+    background: rgba(150,102,56,0.76);
+    color: white;
+    font-weight: 700;
+    padding: 0.8rem 3rem;
+    border-radius: 9999px;
+    letter-spacing: 0.1em;
+    cursor: default;
+    user-select: none;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  .cta:hover {
+    background: rgba(150,102,56,0.9);
+  }
+
+  .footer-text {
+    font-size: 1rem;
+    color: #bbb;
+    letter-spacing: 0.03em;
+  }
+
+  /* Decorative circles */
+  .decorative-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(150,102,56,0.3);
+    opacity: 0.6;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  .circle1 {
+    top: 5rem;
+    left: 5rem;
+    width: 130px;
+    height: 130px;
+  }
+  .circle2 {
+    bottom: 5rem;
+    right: 5rem;
+    width: 90px;
+    height: 90px;
+    opacity: 0.4;
+    animation-delay: 1s;
+  }
+  .circle3 {
+    top: 50%;
+    right: 3rem;
+    width: 65px;
+    height: 65px;
+    border-width: 1px;
+    transform: rotate(45deg);
+    opacity: 0.3;
+    animation: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.15);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .header h1 {
+      font-size: 3rem;
+    }
+    .header h2 {
+      font-size: 1.5rem;
+    }
+    .menu-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .container {
+      padding: 2rem 1rem 2rem;
+    }
+  }
+  @keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* On hovering the card */
+.card:hover {
+  background: rgba(150, 102, 56, 0.3); /* Lighten background */
+  border-color: rgba(150, 102, 56, 0.7);
+  cursor: pointer;
+}
+
+/* Shake the h3 inside hovered card */
+.card:hover .icon-circle {
+  animation: shake 0.9s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="header" role="banner">
+      <div class="line"></div>
+      <h1>CAFÉ</h1>
+      <h2>DELUXE</h2>
+      <div class="line bottom"></div>
+      <p>Artisanal Coffee &amp; Fresh Pastries</p>
+    </header>
+
+    <section class="menu-grid" role="main" aria-label="Café Menu">
+      <!-- Coffee -->
+      <article class="card" aria-labelledby="coffee-title">
+        <div class="icon-circle" aria-hidden="true">☕</div>
+        <h3 id="coffee-title">COFFEE</h3>
+        <div class="menu-item">
+          <span>Espresso</span>
+          <span class="price">₹310</span>
+        </div>
+        <div class="menu-item">
+          <span>Cappuccino</span>
+          <span class="price">₹400</span>
+        </div>
+        <div class="menu-item">
+          <span>Latte</span>
+          <span class="price">₹420</span>
+        </div>
+        <div class="menu-item">
+          <span>Americano</span>
+          <span class="price">₹340</span>
+        </div>
+      </article>
+
+      <!-- Pastries -->
+      <article class="card" aria-labelledby="pastries-title">
+        <div class="icon-circle" aria-hidden="true">🥐</div>
+        <h3 id="pastries-title">PASTRIES</h3>
+        <div class="menu-item">
+          <span>Croissant</span>
+          <span class="price">₹280</span>
+        </div>
+        <div class="menu-item">
+          <span>Danish</span>
+          <span class="price">₹340</span>
+        </div>
+        <div class="menu-item">
+          <span>Muffin</span>
+          <span class="price">₹250</span>
+        </div>
+        <div class="menu-item">
+          <span>Scone</span>
+          <span class="price">₹300</span>
+        </div>
+      </article>
+
+      <!-- Specials -->
+      <article class="card" aria-labelledby="specials-title">
+        <div class="icon-circle special-icon" aria-hidden="true">⭐</div>
+        <h3 id="specials-title">SPECIALS</h3>
+        <div class="menu-item">
+          <span>House Blend</span>
+          <span class="price">₹370</span>
+        </div>
+        <div class="menu-item">
+          <span>Iced Coffee</span>
+          <span class="price">₹400</span>
+        </div>
+        <div class="menu-item">
+          <span>Café Mocha</span>
+          <span class="price">₹450</span>
+        </div>
+        <div class="menu-item">
+          <span>Frappé</span>
+          <span class="price">₹500</span>
+        </div>
+      </article>
+    </section>
+
+    <div class="cta" role="note" aria-live="polite">
+      OPEN DAILY 6AM - 9PM
+    </div>
+    <p class="footer-text">
+      Experience the perfect blend of taste and ambiance
+    </p>
+
+    <!-- Decorative Circles -->
+    <div class="decorative-circle circle1" aria-hidden="true"></div>
+    <div class="decorative-circle circle2" aria-hidden="true"></div>
+    <div class="decorative-circle circle3" aria-hidden="true"></div>
+  </div>
+</body>
+</html>
